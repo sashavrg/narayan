@@ -1,0 +1,11 @@
+/home/svergolini/Documents/GitHub/mp3converter/target/release/deps/wayland_sys-8b533b3bd0a630b0.d: /home/svergolini/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/wayland-sys-0.30.1/src/lib.rs /home/svergolini/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/wayland-sys-0.30.1/src/common.rs /home/svergolini/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/wayland-sys-0.30.1/src/client.rs /home/svergolini/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/wayland-sys-0.30.1/src/server.rs /home/svergolini/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/wayland-sys-0.30.1/src/egl.rs
+
+/home/svergolini/Documents/GitHub/mp3converter/target/release/deps/libwayland_sys-8b533b3bd0a630b0.rlib: /home/svergolini/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/wayland-sys-0.30.1/src/lib.rs /home/svergolini/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/wayland-sys-0.30.1/src/common.rs /home/svergolini/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/wayland-sys-0.30.1/src/client.rs /home/svergolini/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/wayland-sys-0.30.1/src/server.rs /home/svergolini/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/wayland-sys-0.30.1/src/egl.rs
+
+/home/svergolini/Documents/GitHub/mp3converter/target/release/deps/libwayland_sys-8b533b3bd0a630b0.rmeta: /home/svergolini/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/wayland-sys-0.30.1/src/lib.rs /home/svergolini/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/wayland-sys-0.30.1/src/common.rs /home/svergolini/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/wayland-sys-0.30.1/src/client.rs /home/svergolini/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/wayland-sys-0.30.1/src/server.rs /home/svergolini/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/wayland-sys-0.30.1/src/egl.rs
+
+/home/svergolini/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/wayland-sys-0.30.1/src/lib.rs:
+/home/svergolini/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/wayland-sys-0.30.1/src/common.rs:
+/home/svergolini/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/wayland-sys-0.30.1/src/client.rs:
+/home/svergolini/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/wayland-sys-0.30.1/src/server.rs:
+/home/svergolini/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/wayland-sys-0.30.1/src/egl.rs:

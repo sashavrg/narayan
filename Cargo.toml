@@ -1,0 +1,29 @@
+[package]
+name = "flac-to-mp3-converter"
+version = "0.1.0"
+edition = "2021"
+
+[[bin]]
+name = "flac-to-mp3-converter"
+path = "src/main.rs"
+
+[dependencies]
+eframe = "0.24"
+rfd = "0.12"
+
+# macOS-specific dependencies for cross-compilation
+[target.'cfg(target_os = "macos")'.dependencies]
+cocoa = "0.24"
+objc = "0.2"
+
+# Linux-specific dependencies (for the build system)
+[target.'cfg(target_os = "linux")'.dependencies]
+# Add any Linux-specific dependencies here if needed
+
+# For release builds, optimize for size and performance
+[profile.release]
+opt-level = 3
+lto = true
+codegen-units = 1
+panic = "abort"
+strip = true

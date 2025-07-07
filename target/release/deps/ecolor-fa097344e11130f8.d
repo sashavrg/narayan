@@ -1,0 +1,11 @@
+/home/svergolini/Documents/GitHub/mp3converter/target/release/deps/ecolor-fa097344e11130f8.d: /home/svergolini/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/ecolor-0.24.1/src/lib.rs /home/svergolini/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/ecolor-0.24.1/src/color32.rs /home/svergolini/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/ecolor-0.24.1/src/hsva_gamma.rs /home/svergolini/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/ecolor-0.24.1/src/hsva.rs /home/svergolini/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/ecolor-0.24.1/src/rgba.rs
+
+/home/svergolini/Documents/GitHub/mp3converter/target/release/deps/libecolor-fa097344e11130f8.rlib: /home/svergolini/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/ecolor-0.24.1/src/lib.rs /home/svergolini/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/ecolor-0.24.1/src/color32.rs /home/svergolini/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/ecolor-0.24.1/src/hsva_gamma.rs /home/svergolini/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/ecolor-0.24.1/src/hsva.rs /home/svergolini/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/ecolor-0.24.1/src/rgba.rs
+
+/home/svergolini/Documents/GitHub/mp3converter/target/release/deps/libecolor-fa097344e11130f8.rmeta: /home/svergolini/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/ecolor-0.24.1/src/lib.rs /home/svergolini/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/ecolor-0.24.1/src/color32.rs /home/svergolini/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/ecolor-0.24.1/src/hsva_gamma.rs /home/svergolini/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/ecolor-0.24.1/src/hsva.rs /home/svergolini/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/ecolor-0.24.1/src/rgba.rs
+
+/home/svergolini/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/ecolor-0.24.1/src/lib.rs:
+/home/svergolini/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/ecolor-0.24.1/src/color32.rs:
+/home/svergolini/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/ecolor-0.24.1/src/hsva_gamma.rs:
+/home/svergolini/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/ecolor-0.24.1/src/hsva.rs:
+/home/svergolini/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/ecolor-0.24.1/src/rgba.rs:

@@ -1,0 +1,10 @@
+/home/svergolini/Documents/GitHub/mp3converter/target/release/deps/zbus_macros-8a5d6959e29608d8.d: /home/svergolini/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zbus_macros-3.15.2/src/lib.rs /home/svergolini/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zbus_macros-3.15.2/src/error.rs /home/svergolini/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zbus_macros-3.15.2/src/iface.rs /home/svergolini/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zbus_macros-3.15.2/src/proxy.rs /home/svergolini/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zbus_macros-3.15.2/src/utils.rs /home/svergolini/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zbus_macros-3.15.2/src/../README.md
+
+/home/svergolini/Documents/GitHub/mp3converter/target/release/deps/libzbus_macros-8a5d6959e29608d8.so: /home/svergolini/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zbus_macros-3.15.2/src/lib.rs /home/svergolini/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zbus_macros-3.15.2/src/error.rs /home/svergolini/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zbus_macros-3.15.2/src/iface.rs /home/svergolini/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zbus_macros-3.15.2/src/proxy.rs /home/svergolini/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zbus_macros-3.15.2/src/utils.rs /home/svergolini/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zbus_macros-3.15.2/src/../README.md
+
+/home/svergolini/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zbus_macros-3.15.2/src/lib.rs:
+/home/svergolini/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zbus_macros-3.15.2/src/error.rs:
+/home/svergolini/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zbus_macros-3.15.2/src/iface.rs:
+/home/svergolini/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zbus_macros-3.15.2/src/proxy.rs:
+/home/svergolini/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zbus_macros-3.15.2/src/utils.rs:
+/home/svergolini/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zbus_macros-3.15.2/src/../README.md:

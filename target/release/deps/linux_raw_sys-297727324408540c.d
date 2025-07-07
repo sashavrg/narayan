@@ -1,0 +1,10 @@
+/home/svergolini/Documents/GitHub/mp3converter/target/release/deps/linux_raw_sys-297727324408540c.d: /home/svergolini/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/linux-raw-sys-0.3.8/src/lib.rs /home/svergolini/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/linux-raw-sys-0.3.8/src/x86_64/errno.rs /home/svergolini/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/linux-raw-sys-0.3.8/src/x86_64/general.rs /home/svergolini/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/linux-raw-sys-0.3.8/src/x86_64/ioctl.rs
+
+/home/svergolini/Documents/GitHub/mp3converter/target/release/deps/liblinux_raw_sys-297727324408540c.rlib: /home/svergolini/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/linux-raw-sys-0.3.8/src/lib.rs /home/svergolini/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/linux-raw-sys-0.3.8/src/x86_64/errno.rs /home/svergolini/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/linux-raw-sys-0.3.8/src/x86_64/general.rs /home/svergolini/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/linux-raw-sys-0.3.8/src/x86_64/ioctl.rs
+
+/home/svergolini/Documents/GitHub/mp3converter/target/release/deps/liblinux_raw_sys-297727324408540c.rmeta: /home/svergolini/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/linux-raw-sys-0.3.8/src/lib.rs /home/svergolini/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/linux-raw-sys-0.3.8/src/x86_64/errno.rs /home/svergolini/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/linux-raw-sys-0.3.8/src/x86_64/general.rs /home/svergolini/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/linux-raw-sys-0.3.8/src/x86_64/ioctl.rs
+
+/home/svergolini/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/linux-raw-sys-0.3.8/src/lib.rs:
+/home/svergolini/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/linux-raw-sys-0.3.8/src/x86_64/errno.rs:
+/home/svergolini/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/linux-raw-sys-0.3.8/src/x86_64/general.rs:
+/home/svergolini/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/linux-raw-sys-0.3.8/src/x86_64/ioctl.rs:
