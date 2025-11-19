@@ -1,6 +1,6 @@
 # FLAC to MP3 Converter
 
-A simple, efficient GUI application built in Rust for converting FLAC audio files to MP3 format at 320kbps while preserving metadata. Features batch processing and a clean, user-friendly interface.
+A simple, efficient application built in Rust for converting FLAC audio files to MP3 format at 320kbps while preserving metadata. Available as both a desktop GUI application and a web-based service for home servers.
 
 ## Features
 
@@ -8,8 +8,9 @@ A simple, efficient GUI application built in Rust for converting FLAC audio file
 - **Metadata Preservation**: Maintains all original metadata (artist, album, title, etc.)
 - **Batch Processing**: Convert multiple files or entire folders at once
 - **Progress Tracking**: Real-time progress updates during conversion
-- **Cross-Platform**: Built for macOS (with potential for Linux/Windows)
-- **Clean GUI**: Intuitive interface built with egui
+- **Multiple Interfaces**: Desktop GUI (egui) or Web UI
+- **Docker Support**: Easy deployment on home servers
+- **Cross-Platform**: Built for macOS, Linux, and Windows
 
 ## Prerequisites
 
@@ -35,6 +36,87 @@ sudo dnf install ffmpeg
 **Verify installation:**
 ```bash
 ffmpeg -version
+```
+
+## Quick Start with Docker (Recommended for Home Servers)
+
+The easiest way to run the FLAC to MP3 converter on your home server is using Docker. This provides a web-based interface accessible from any device on your local network.
+
+### Prerequisites
+- Docker and Docker Compose installed on your system
+- No need to install FFmpeg separately (included in the Docker image)
+
+### Deployment Steps
+
+1. **Clone the repository:**
+```bash
+git clone <repository-url>
+cd flac-to-mp3-converter
+```
+
+2. **Quick Start (Automated):**
+```bash
+./start-docker.sh
+```
+
+Or **manually with Docker Compose:**
+```bash
+docker-compose up -d
+```
+
+3. **Access the web interface:**
+Open your browser and navigate to:
+```
+http://localhost:8080
+```
+
+Or from another device on your network:
+```
+http://<your-server-ip>:8080
+```
+
+4. **Stop the service:**
+```bash
+docker-compose down
+```
+
+### Using the Web Interface
+
+1. **Upload Files**: Click "Choose FLAC Files" and select your FLAC files
+2. **Start Conversion**: Click "Start Conversion" to begin processing
+3. **Monitor Progress**: Watch real-time progress and log messages
+4. **Download**: Once complete, click "View/Download Files" to get your MP3s
+
+### Docker Manual Build
+
+If you prefer to build manually without Docker Compose:
+
+```bash
+# Build the image
+docker build -t flac-to-mp3-web .
+
+# Run the container
+docker run -d \
+  --name flac-converter \
+  -p 8080:8080 \
+  -v $(pwd)/output:/tmp/mp3_output \
+  flac-to-mp3-web
+
+# View logs
+docker logs -f flac-converter
+
+# Stop the container
+docker stop flac-converter
+docker rm flac-converter
+```
+
+### Persistent Storage
+
+By default, converted MP3 files are stored in the `output/` directory on your host machine, which is mounted to the container. You can change this in `docker-compose.yml`:
+
+```yaml
+volumes:
+  - /path/to/your/output:/tmp/mp3_output
 ```
 
 ## Building from Source
@@ -104,6 +186,8 @@ rpmbuild -ba rpmbuild/SPECS/flac-to-mp3-converter.spec
 
 ## Usage
 
+### Desktop Application (GUI)
+
 1. **Launch the application**
 2. **Add FLAC files** using one of these methods:
    - Click "Add FLAC Files" to select individual files
@@ -111,6 +195,14 @@ rpmbuild -ba rpmbuild/SPECS/flac-to-mp3-converter.spec
 3. **Select output folder** where converted MP3s will be saved
 4. **Start conversion** - the app will convert all files at 320kbps with metadata preserved
 5. **Monitor progress** through the progress bar and log messages
+
+### Web Application (Docker)
+
+1. **Access** the web interface at `http://localhost:8080`
+2. **Upload** FLAC files by clicking "Choose FLAC Files"
+3. **Start conversion** by clicking "Start Conversion"
+4. **Monitor** real-time progress and conversion logs
+5. **Download** converted files via the "View/Download Files" button
 
 ## Technical Details
 
@@ -121,14 +213,32 @@ rpmbuild -ba rpmbuild/SPECS/flac-to-mp3-converter.spec
 - **Quality**: High-quality conversion using FFmpeg
 
 ### Dependencies
+
+**Desktop Application:**
 - `eframe`: Modern GUI framework
 - `rfd`: Native file dialogs
 - `egui`: Immediate mode GUI library
 
+**Web Application:**
+- `actix-web`: High-performance web framework
+- `actix-multipart`: File upload handling
+- `tokio`: Async runtime
+- `serde`: Serialization/deserialization
+
 ### Architecture
+
+**Desktop Version:**
 - **Frontend**: egui-based GUI with real-time updates
 - **Backend**: Multi-threaded conversion using FFmpeg
 - **Communication**: Channel-based messaging between GUI and conversion threads
+
+**Web Version:**
+- **Frontend**: Modern HTML5/CSS3/JavaScript interface
+- **Backend**: RESTful API built with Actix-web
+- **Storage**: Temporary file storage with automatic cleanup
+- **Conversion**: Async processing with FFmpeg
+- **Communication**: HTTP API with real-time status polling
+- **Deployment**: Docker containerization with multi-stage builds
 
 ## Code Signing (Optional)
 

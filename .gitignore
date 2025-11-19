@@ -1,0 +1,33 @@
+# Rust
+target/
+Cargo.lock
+
+# Build artifacts
+*.o
+*.so
+*.dylib
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Output directory
+output/
+
+# Temporary files
+/tmp/
+
+# Package files
+*.AppImage
+*.AppDir
+*.tar.gz
+*.rpm
+*.deb
+rpmbuild/

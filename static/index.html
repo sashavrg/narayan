@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FLAC to MP3 Converter</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎵 FLAC to MP3 Converter</h1>
+            <p class="subtitle">High-quality audio conversion at 320kbps</p>
+        </header>
+
+        <div id="ffmpeg-warning" class="warning hidden">
+            ⚠️ FFmpeg not available! Please ensure FFmpeg is installed in the container.
+        </div>
+
+        <div class="card">
+            <h2>Upload FLAC Files</h2>
+            <div class="upload-section">
+                <input type="file" id="fileInput" accept=".flac" multiple style="display: none;">
+                <button class="btn btn-primary" onclick="document.getElementById('fileInput').click()">
+                    Choose FLAC Files
+                </button>
+                <button class="btn btn-secondary" onclick="clearFiles()">Clear All</button>
+            </div>
+            <div id="fileList" class="file-list"></div>
+        </div>
+
+        <div class="card">
+            <h2>Conversion</h2>
+            <div class="conversion-section">
+                <button class="btn btn-success" id="convertBtn" onclick="startConversion()">
+                    Start Conversion
+                </button>
+                <div class="conversion-info">
+                    <span class="badge">Bitrate: 320kbps</span>
+                    <span class="badge">Metadata: Preserved</span>
+                </div>
+            </div>
+        </div>
+
+        <div id="progressCard" class="card hidden">
+            <h2>Progress</h2>
+            <div class="progress-section">
+                <div id="currentFile" class="current-file"></div>
+                <div class="progress-bar-container">
+                    <div id="progressBar" class="progress-bar"></div>
+                </div>
+                <div id="progressText" class="progress-text"></div>
+            </div>
+        </div>
+
+        <div id="logCard" class="card hidden">
+            <h2>Conversion Log</h2>
+            <div id="logMessages" class="log-messages"></div>
+        </div>
+
+        <div id="downloadCard" class="card hidden">
+            <h2>Download Converted Files</h2>
+            <p>Your converted MP3 files are ready!</p>
+            <button class="btn btn-success" onclick="window.open('/downloads', '_blank')">
+                View/Download Files
+            </button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
