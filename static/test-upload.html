@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Upload Test</title>
+</head>
+<body>
+    <h1>Upload Test</h1>
+    <input type="file" id="fileInput" accept=".flac" multiple>
+    <button onclick="testUpload()">Upload</button>
+    <pre id="output"></pre>
+
+    <script>
+        async function testUpload() {
+            const files = document.getElementById('fileInput').files;
+            const output = document.getElementById('output');
+
+            if (files.length === 0) {
+                output.textContent = 'No files selected';
+                return;
+            }
+
+            const formData = new FormData();
+            for (let file of files) {
+                formData.append('files', file);
+            }
+
+            output.textContent = `Uploading ${files.length} file(s)...\n`;
+            output.textContent += `File names: ${Array.from(files).map(f => f.name).join(', ')}\n`;
+            output.textContent += `Total size: ${Array.from(files).reduce((sum, f) => sum + f.size, 0)} bytes\n\n`;
+
+            try {
+                const response = await fetch('/api/upload', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                output.textContent += `Response status: ${response.status} ${response.statusText}\n`;
+
+                const contentType = response.headers.get('content-type');
+                output.textContent += `Content-Type: ${contentType}\n\n`;
+
+                if (contentType && contentType.includes('application/json')) {
+                    const data = await response.json();
+                    output.textContent += 'Response body:\n';
+                    output.textContent += JSON.stringify(data, null, 2);
+                } else {
+                    const text = await response.text();
+                    output.textContent += 'Response body:\n';
+                    output.textContent += text;
+                }
+            } catch (error) {
+                output.textContent += `\n\nERROR: ${error.name}: ${error.message}\n`;
+                output.textContent += `Stack: ${error.stack}`;
+            }
+        }
+    </script>
+</body>
+</html>

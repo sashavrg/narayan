@@ -1,0 +1,40 @@
+version: '3.8'
+
+services:
+  narayan-web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: narayan-converter
+    ports:
+      - "5678:3000"
+    volumes:
+      # Optional: Persistent temp storage for debugging
+      - ./temp:/tmp/narayan
+    environment:
+      - RUST_LOG=debug
+      - BIND_ADDRESS=0.0.0.0:3000
+      - MAX_CONCURRENT_CONVERSIONS=4
+      - MAX_UPLOAD_SIZE=524288000  # 500MB in bytes
+      - JOB_TIMEOUT=3600  # 1 hour
+      - MAX_FILES_PER_JOB=50
+      - TEMP_DIR=/tmp/narayan
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: '4.0'
+          memory: 2G
+        reservations:
+          cpus: '1.0'
+          memory: 512M
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/"]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+      start_period: 10s
+
+networks:
+  default:
+    name: narayan-network

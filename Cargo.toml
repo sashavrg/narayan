@@ -1,24 +1,53 @@
 [package]
-name = "flac-to-mp3-converter"
+name = "narayan-web"
 version = "0.1.0"
 edition = "2021"
 
 [[bin]]
-name = "flac-to-mp3-converter"
+name = "narayan-web"
 path = "src/main.rs"
 
 [dependencies]
-eframe = "0.24"
-rfd = "0.12"
+# Web framework
+axum = { version = "0.7", features = ["multipart", "ws"] }
+tokio = { version = "1", features = ["full"] }
+tower = "0.4"
+tower-http = { version = "0.5", features = ["fs", "trace", "cors", "limit"] }
 
-# macOS-specific dependencies for cross-compilation
-[target.'cfg(target_os = "macos")'.dependencies]
-cocoa = "0.24"
-objc = "0.2"
+# Serialization
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
 
-# Linux-specific dependencies (for the build system)
-[target.'cfg(target_os = "linux")'.dependencies]
-# Add any Linux-specific dependencies here if needed
+# Async utilities
+tokio-util = { version = "0.7", features = ["codec"] }
+futures = "0.3"
+
+# File handling
+tempfile = "3.10"
+uuid = { version = "1.7", features = ["v4", "serde"] }
+
+# Error handling
+thiserror = "1.0"
+anyhow = "1.0"
+
+# Logging
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+
+# Configuration
+dotenvy = "0.15"
+
+# Date/time
+chrono = { version = "0.4", features = ["serde"] }
+
+# Concurrency
+parking_lot = "0.12"
+dashmap = "5.5"
+
+[dev-dependencies]
+# Testing
+reqwest = { version = "0.11", features = ["multipart"] }
+tokio-test = "0.4"
 
 # For release builds, optimize for size and performance
 [profile.release]

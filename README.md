@@ -1,179 +1,205 @@
-# FLAC to MP3 Converter
+# Narayan Web - FLAC to MP3 Converter
 
-A simple, efficient GUI application built in Rust for converting FLAC audio files to MP3 format at 320kbps while preserving metadata. Features batch processing and a clean, user-friendly interface.
+A modern web-based FLAC to MP3 converter with real-time progress updates, built with Rust and Axum.
 
 ## Features
 
-- **High-Quality Conversion**: Converts FLAC to MP3 at 320kbps bitrate
-- **Metadata Preservation**: Maintains all original metadata (artist, album, title, etc.)
-- **Batch Processing**: Convert multiple files or entire folders at once
-- **Progress Tracking**: Real-time progress updates during conversion
-- **Cross-Platform**: Built for macOS (with potential for Linux/Windows)
-- **Clean GUI**: Intuitive interface built with egui
+- 🎵 Convert FLAC files to MP3 (320kbps) with metadata preservation
+- 🚀 Batch processing with concurrent conversion support
+- 📊 Real-time progress updates via WebSocket
+- 🖱️ Drag & drop file upload
+- 📦 Batch download as ZIP
+- 🐳 Docker containerized for easy deployment
+- 🔒 Secure and efficient
 
-## Prerequisites
+## Quick Start with Docker
 
-### FFmpeg Installation
+### Prerequisites
 
-This application requires FFmpeg to be installed on your system.
+- Docker and Docker Compose installed
+- At least 2GB of available RAM
 
-**Fedora Linux:**
+### Running the Application
+
+1. Clone the repository:
 ```bash
-# Enable RPM Fusion repositories (if not already enabled)
-sudo dnf install https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm
-sudo dnf install https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
-
-# Install FFmpeg
-sudo dnf install ffmpeg
+git clone https://github.com/sashavrg/narayan.git narayan-web
+cd narayan-web
 ```
 
-**Other Linux distributions:**
-- Ubuntu/Debian: `sudo apt install ffmpeg`
-- Arch Linux: `sudo pacman -S ffmpeg`
-- openSUSE: `sudo zypper install ffmpeg`
-
-**Verify installation:**
+2. Start the application:
 ```bash
-ffmpeg -version
+docker-compose up -d
 ```
 
-## Building from Source
-
-### Requirements
-- Rust 1.70+ (install from https://rustup.rs/)
-- Development tools: `sudo dnf groupinstall "Development Tools"`
-- System dependencies: `sudo dnf install pkg-config fontconfig-devel`
-
-### Build Steps
-
-1. **Clone the repository:**
-```bash
-git clone <repository-url>
-cd flac-to-mp3-converter
+3. Access the web interface:
+```
+http://localhost:3000
 ```
 
-2. **Build the application:**
+### Stopping the Application
+
 ```bash
-cargo build --release
+docker-compose down
 ```
 
-3. **Run the application:**
+## Local Development
+
+### Prerequisites
+
+- Rust 1.75+ installed
+- FFmpeg installed and in PATH
+- Node.js (optional, for frontend development)
+
+### Setup
+
+1. Install dependencies:
 ```bash
-cargo run --release
+cargo build
 ```
 
-### Creating Distribution Packages (Linux)
-
-1. **Make the build script executable:**
+2. Run the application:
 ```bash
-chmod +x build_and_package.sh
+cargo run
 ```
 
-2. **Run the build script:**
-```bash
-./build_and_package.sh
+3. Access the web interface:
+```
+http://localhost:3000
 ```
 
-This will create:
-- A standalone binary at `target/release/flac-to-mp3-converter`
-- An AppImage directory structure at `target/release/flac-to-mp3-converter.AppDir`
-- A tarball at `target/release/flac-to-mp3-converter-1.0.0-linux-[arch].tar.gz`
-- RPM spec file for building RPM packages
+## Configuration
 
-3. **Optional: Create AppImage** (if you have appimagetool):
-```bash
-# Download appimagetool
-wget https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage
-chmod +x appimagetool-x86_64.AppImage
+Configuration is done via environment variables. See `.env.example` for all available options.
 
-# Create AppImage
-./appimagetool-x86_64.AppImage target/release/flac-to-mp3-converter.AppDir
+Key settings:
+- `BIND_ADDRESS`: Server bind address (default: `0.0.0.0:3000`)
+- `MAX_CONCURRENT_CONVERSIONS`: Maximum concurrent FFmpeg processes (default: `4`)
+- `MAX_UPLOAD_SIZE`: Maximum upload size in bytes (default: `524288000` = 500MB)
+- `JOB_TIMEOUT`: Job timeout in seconds (default: `3600` = 1 hour)
+
+## API Endpoints
+
+### Upload Files
+```
+POST /api/upload
+Content-Type: multipart/form-data
+
+Response: { "job_id": "uuid", "file_count": 3 }
 ```
 
-4. **Optional: Build RPM package**:
-```bash
-# Copy source to rpmbuild directory
-cp -r . rpmbuild/BUILD/flac-to-mp3-converter-1.0.0/
-cd rpmbuild/BUILD/flac-to-mp3-converter-1.0.0/
-tar -czf ../../SOURCES/flac-to-mp3-converter-1.0.0.tar.gz .
-cd ../../..
+### Get Job Status
+```
+GET /api/jobs/:id
 
-# Build RPM
-rpmbuild -ba rpmbuild/SPECS/flac-to-mp3-converter.spec
+Response: {
+  "id": "uuid",
+  "status": { "type": "processing", "current_file": 1, "total": 3 },
+  "files": [...],
+  "created_at": "...",
+  "updated_at": "..."
+}
 ```
 
-## Usage
+### List All Jobs
+```
+GET /api/jobs
 
-1. **Launch the application**
-2. **Add FLAC files** using one of these methods:
-   - Click "Add FLAC Files" to select individual files
-   - Click "Add Folder" to add all FLAC files from a directory
-3. **Select output folder** where converted MP3s will be saved
-4. **Start conversion** - the app will convert all files at 320kbps with metadata preserved
-5. **Monitor progress** through the progress bar and log messages
+Response: { "jobs": [...] }
+```
 
-## Technical Details
+### Download Single File
+```
+GET /api/download/:job_id
+```
 
-### Conversion Specifications
-- **Output Format**: MP3
-- **Bitrate**: 320kbps (constant bitrate)
-- **Metadata**: ID3v2.3 tags preserved from source
-- **Quality**: High-quality conversion using FFmpeg
+### Download Batch as ZIP
+```
+GET /api/download/batch/:job_id
+```
 
-### Dependencies
-- `eframe`: Modern GUI framework
-- `rfd`: Native file dialogs
-- `egui`: Immediate mode GUI library
+### WebSocket
+```
+WS /ws
 
-### Architecture
-- **Frontend**: egui-based GUI with real-time updates
-- **Backend**: Multi-threaded conversion using FFmpeg
-- **Communication**: Channel-based messaging between GUI and conversion threads
+Messages:
+- Subscribe: { "type": "subscribe", "job_id": "uuid" }
+- Progress: { "type": "progress", "job_id": "uuid", "file": "...", "percent": 50.0 }
+- Complete: { "type": "complete", "job_id": "uuid" }
+- Error: { "type": "error", "job_id": "uuid", "message": "..." }
+```
 
-## Code Signing (Optional)
+## Architecture
 
-For distribution, you may want to code sign the application:
+### Backend (Rust)
+- **Axum**: Web framework
+- **Tokio**: Async runtime
+- **FFmpeg**: Audio conversion engine
+- **WebSocket**: Real-time progress updates
 
-1. **Get a Developer ID certificate** from Apple
-2. **Uncomment the code signing section** in `build_and_package.sh`
-3. **Update the signing identity** to match your certificate
+### Frontend (Vanilla JS)
+- Drag & drop file upload
+- WebSocket client for live updates
+- Responsive UI with CSS Grid
+
+### Deployment
+- Multi-stage Docker build
+- Non-root user for security
+- Resource limits and health checks
+
+## Project Structure
+
+```
+narayan-web/
+├── src/
+│   ├── main.rs                 # Entry point
+│   ├── config.rs               # Configuration
+│   ├── error.rs                # Error types
+│   ├── handlers/               # HTTP handlers
+│   ├── services/               # Business logic
+│   ├── models/                 # Data models
+│   └── utils/                  # Utilities
+├── static/
+│   ├── index.html
+│   ├── css/styles.css
+│   └── js/                     # Frontend JS
+├── Dockerfile
+├── docker-compose.yml
+└── README.md
+```
+
+## Performance
+
+- Concurrent conversions: Up to 4 simultaneous FFmpeg processes
+- Upload limit: 500MB per request
+- Files per job: Up to 50 files
+- Memory usage: ~512MB-2GB depending on load
 
 ## Troubleshooting
 
-### Common Issues
+### FFmpeg Not Found
+Ensure FFmpeg is installed:
+```bash
+# Debian/Ubuntu
+apt-get install ffmpeg
 
-**"FFmpeg not found" error:**
-- Ensure FFmpeg is installed and available in PATH
-- Test with `ffmpeg -version` in terminal
+# macOS
+brew install ffmpeg
 
-**Build errors:**
-- Ensure Rust is up to date: `rustup update`
-- Install development tools: `sudo dnf groupinstall "Development Tools"`
-- Install system dependencies: `sudo dnf install pkg-config fontconfig-devel`
+# Check installation
+ffmpeg -version
+```
 
-**Permission errors:**
-- Make sure the build script is executable: `chmod +x build_and_package.sh`
+### Port Already in Use
+Change the `BIND_ADDRESS` in `.env` or docker-compose.yml
 
-### Performance Tips
-
-- **Large batches**: The application processes files sequentially to avoid overwhelming the system
-- **Disk space**: Ensure adequate free space (MP3s are typically 10-15% the size of FLACs)
-- **Memory usage**: Minimal memory footprint due to streaming conversion
-
-## Contributing
-
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Test thoroughly
-5. Submit a pull request
+### Conversion Fails
+Check FFmpeg logs in the console output with `RUST_LOG=debug`
 
 ## License
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+See original Narayan project for license information.
 
-## Acknowledgments
+## Credits
 
-- Built with the excellent `egui` immediate mode GUI framework
-- Uses FFmpeg for high-quality audio conversion
-- Inspired by the need for a simple, efficient FLAC to MP3 converter
+Based on the original Narayan FLAC to MP3 converter by sashavrg.

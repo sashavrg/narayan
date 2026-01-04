@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Narayan - FLAC to MP3 Converter</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+    <div id="app">
+        <header>
+            <h1>Narayan</h1>
+            <p>FLAC to MP3 Converter (320kbps)</p>
+        </header>
+
+        <main>
+            <!-- Upload Zone -->
+            <section class="upload-section">
+                <div id="drop-zone" class="drop-zone">
+                    <div class="drop-zone-content">
+                        <svg class="upload-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                        </svg>
+                        <p class="drop-text">Drag & drop FLAC files here</p>
+                        <p class="drop-subtext">or</p>
+                        <button id="browse-btn" class="btn btn-primary">Browse Files</button>
+                        <input type="file" id="file-input" multiple accept=".flac" style="display: none;">
+                    </div>
+                </div>
+            </section>
+
+            <!-- Jobs List -->
+            <section class="jobs-section">
+                <h2>Conversion Jobs</h2>
+                <div id="jobs-list" class="jobs-list">
+                    <p class="no-jobs">No active jobs. Upload FLAC files to get started.</p>
+                </div>
+            </section>
+        </main>
+
+        <!-- Job Card Template -->
+        <template id="job-template">
+            <div class="job-card" data-job-id="">
+                <div class="job-header">
+                    <h3 class="job-title"></h3>
+                    <span class="job-status"></span>
+                </div>
+                <div class="job-body">
+                    <div class="progress-container">
+                        <div class="progress-bar">
+                            <div class="progress-fill"></div>
+                        </div>
+                        <span class="progress-text">0%</span>
+                    </div>
+                    <p class="status-text">Waiting...</p>
+                    <div class="file-list"></div>
+                </div>
+                <div class="job-actions">
+                    <button class="btn btn-download" style="display: none;">Download All (ZIP)</button>
+                </div>
+            </div>
+        </template>
+    </div>
+
+    <!-- Connection Status -->
+    <div id="connection-status" class="connection-status"></div>
+
+    <script src="/js/websocket.js" type="module"></script>
+    <script src="/js/uploader.js" type="module"></script>
+    <script src="/js/app.js" type="module"></script>
+</body>
+</html>
