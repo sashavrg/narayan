@@ -23,6 +23,8 @@ pub struct Config {
 
     /// Temporary directory for conversions
     pub temp_dir: PathBuf,
+
+    pub music_library_root: PathBuf,
 }
 
 impl Default for Config {
@@ -56,6 +58,10 @@ impl Default for Config {
                 .ok()
                 .map(PathBuf::from)
                 .unwrap_or_else(|| PathBuf::from("/tmp/narayan")),
+            music_library_root: std::env::var("MUSIC_LIBRARY_ROOT")
+                .ok()
+                .map(PathBuf::from)
+                .unwrap_or_else(|| PathBuf::from("/mnt/storage/share/media/music")),
         }
     }
 }

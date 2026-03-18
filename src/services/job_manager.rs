@@ -40,6 +40,10 @@ impl JobManager {
         &self.config.temp_dir
     }
 
+    pub fn music_library_root(&self) -> &PathBuf {
+        &self.config.music_library_root
+    }
+
     pub async fn create_job(&self, files: Vec<(PathBuf, String)>) -> Result<String> {
         if files.is_empty() {
             return Err(AppError::NoFilesProvided);
@@ -135,9 +139,10 @@ impl JobManager {
             );
 
             // Acquire semaphore permit (limits concurrent FFmpeg processes)
-            let _permit = self.semaphore.acquire().await.map_err(|e| {
-                AppError::Internal(format!("Failed to acquire semaphore: {}", e))
-            })?;
+            let _permit =
+                self.semaphore.acquire().await.map_err(|e| {
+                    AppError::Internal(format!("Failed to acquire semaphore: {}", e))
+                })?;
 
             // Update job status
             if let Some(mut job) = self.jobs.get_mut(&job_id) {
@@ -148,7 +153,8 @@ impl JobManager {
             }
 
             // Generate output path using original filename
-            let output_filename = file_info.filename
+            let output_filename = file_info
+                .filename
                 .strip_suffix(".flac")
                 .or_else(|| file_info.filename.strip_suffix(".FLAC"))
                 .map(|s| format!("{}.mp3", s))
@@ -224,7 +230,10 @@ impl JobManager {
     }
 
     pub fn list_jobs(&self) -> Vec<Job> {
-        self.jobs.iter().map(|entry| entry.value().clone()).collect()
+        self.jobs
+            .iter()
+            .map(|entry| entry.value().clone())
+            .collect()
     }
 
     pub fn delete_job(&self, job_id: &str) -> Result<()> {
@@ -277,9 +286,9 @@ mod tests {
         let manager = JobManager::new(config);
 
         let files = vec![
-            PathBuf::from("file1.flac"),
-            PathBuf::from("file2.flac"),
-            PathBuf::from("file3.flac"),
+            (PathBuf::from("file1.flac"), "file1.flac".to_string()),
+            (PathBuf::from("file2.flac"), "file2.flac".to_string()),
+            (PathBuf::from("file3.flac"), "file3.flac".to_string()),
         ];
 
         let result = manager.create_job(files).await;

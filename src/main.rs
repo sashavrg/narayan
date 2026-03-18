@@ -5,7 +5,10 @@ use axum::{
 };
 use narayan_web::{
     config::Config,
-    handlers::{download_batch, download_file, get_job, handle_upload, list_jobs, websocket_handler},
+    handlers::{
+        browse_library, convert_library_selection, download_batch, download_file, get_job,
+        handle_upload, list_jobs, websocket_handler,
+    },
     models::AppState,
     services::JobManager,
     utils::check_ffmpeg_installed,
@@ -13,12 +16,9 @@ use narayan_web::{
 use std::sync::Arc;
 use tower::ServiceBuilder;
 use tower_http::{
-    cors::CorsLayer,
-    limit::RequestBodyLimitLayer,
-    services::ServeDir,
-    trace::TraceLayer,
+    cors::CorsLayer, limit::RequestBodyLimitLayer, services::ServeDir, trace::TraceLayer,
 };
-use tracing::{info, error};
+use tracing::{error, info};
 use tracing_subscriber::{layer::SubscriberExt, util::SubscriberInitExt};
 
 #[tokio::main]
@@ -62,8 +62,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let listener = tokio::net::TcpListener::bind(&config.bind_address).await?;
     info!("Server listening on {}", config.bind_address);
 
-    axum::serve(listener, app)
-        .await?;
+    axum::serve(listener, app).await?;
 
     Ok(())
 }
@@ -72,6 +71,8 @@ async fn create_router(state: AppState, config: Config) -> Router {
     Router::new()
         // API routes
         .route("/api/upload", post(handle_upload))
+        .route("/api/library", get(browse_library))
+        .route("/api/library/convert", post(convert_library_selection))
         .route("/api/jobs", get(list_jobs))
         .route("/api/jobs/:id", get(get_job))
         .route("/api/download/:id", get(download_file))

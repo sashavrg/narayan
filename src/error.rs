@@ -16,6 +16,9 @@ pub enum AppError {
     #[error("Invalid file type")]
     InvalidFileType,
 
+    #[error("Invalid path: {0}")]
+    InvalidPath(String),
+
     #[error("File too large")]
     FileTooLarge,
 
@@ -48,6 +51,7 @@ impl IntoResponse for AppError {
     fn into_response(self) -> Response {
         let (status, error_message) = match self {
             AppError::InvalidFileType => (StatusCode::BAD_REQUEST, self.to_string()),
+            AppError::InvalidPath(_) => (StatusCode::BAD_REQUEST, self.to_string()),
             AppError::FileTooLarge => (StatusCode::PAYLOAD_TOO_LARGE, self.to_string()),
             AppError::TooManyFiles(_) => (StatusCode::BAD_REQUEST, self.to_string()),
             AppError::NoFilesProvided => (StatusCode::BAD_REQUEST, self.to_string()),
@@ -57,9 +61,7 @@ impl IntoResponse for AppError {
                 "FFmpeg is not installed on the server".to_string(),
             ),
             AppError::ConversionError(_) => (StatusCode::INTERNAL_SERVER_ERROR, self.to_string()),
-            AppError::JobCreationFailed(_) => {
-                (StatusCode::INTERNAL_SERVER_ERROR, self.to_string())
-            }
+            AppError::JobCreationFailed(_) => (StatusCode::INTERNAL_SERVER_ERROR, self.to_string()),
             AppError::WebSocketError(_) => (StatusCode::INTERNAL_SERVER_ERROR, self.to_string()),
             AppError::ZipError(_) => (StatusCode::INTERNAL_SERVER_ERROR, self.to_string()),
             AppError::Io(_) => (StatusCode::INTERNAL_SERVER_ERROR, self.to_string()),

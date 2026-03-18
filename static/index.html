@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Narayan - FLAC to MP3 Converter</title>
+    <title>Narayan | Internal Music Conversion Console</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/css/styles.css">
     <script type="importmap">
     {
@@ -17,43 +17,74 @@
     </script>
 </head>
 <body>
-    <div id="background-gradient" class="animated-gradient"></div>
+    <div id="background-gradient" class="atmosphere"></div>
     <div id="app">
         <header class="ethereal-header">
-            <h1>Narayan</h1>
-            <p>FLAC to MP3 Converter (320kbps)</p>
+            <p class="eyebrow">Internal Tooling</p>
+            <h1>Narayan Music Browser</h1>
+            <p class="subtitle">Browse <code>/mnt/storage/share/media/music</code>, select files or folders, and queue FLAC to MP3 conversion jobs.</p>
         </header>
 
         <main>
-            <!-- Upload Zone -->
-            <section class="upload-section">
-                <div class="glass-panel drop-zone-glass">
-                    <div id="drop-zone" class="drop-zone">
-                        <div class="drop-zone-content">
-                            <svg class="upload-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
-                            </svg>
-                            <p class="drop-text">Drag & drop FLAC files here</p>
-                            <p class="drop-subtext">or</p>
-                            <input type="file" id="file-input" multiple accept=".flac" style="display: none;">
-                            <label for="file-input" id="browse-btn" class="btn btn-primary">Browse Files</label>
+            <section class="upload-section workspace">
+                <div class="panel library-panel">
+                    <div class="panel-head">
+                        <div>
+                            <h2>Library Navigator</h2>
+                            <p id="root-path" class="muted"></p>
+                        </div>
+                        <div class="panel-actions">
+                            <button id="up-btn" class="btn btn-ghost" type="button">Up</button>
+                            <button id="refresh-btn" class="btn btn-ghost" type="button">Refresh</button>
                         </div>
                     </div>
+
+                    <div id="breadcrumbs" class="breadcrumbs" aria-label="Current folder path"></div>
+
+                    <div class="filter-bar">
+                        <input id="browser-filter" type="search" placeholder="Filter current folder..." autocomplete="off">
+                    </div>
+
+                    <div id="browser-feedback" class="browser-feedback" role="status" aria-live="polite"></div>
+
+                    <div id="library-list" class="library-list" aria-live="polite"></div>
                 </div>
+
+                <aside class="panel selection-panel">
+                    <div class="panel-head">
+                        <div>
+                            <h2>Selection Queue</h2>
+                            <p class="muted">Add files or full folders from the navigator.</p>
+                        </div>
+                    </div>
+
+                    <div class="selection-stats">
+                        <span id="selection-count">0 items selected</span>
+                    </div>
+
+                    <div id="selection-list" class="selection-list" aria-live="polite">
+                        <p class="empty-selection">No files or folders selected yet.</p>
+                    </div>
+
+                    <button id="start-convert-btn" class="btn btn-primary" type="button" disabled>
+                        Start Conversion
+                    </button>
+                </aside>
             </section>
 
-            <!-- Jobs List -->
             <section class="jobs-section">
-                <h2>Conversion Jobs</h2>
+                <div class="jobs-header">
+                    <h2>Conversion Jobs</h2>
+                    <p class="muted">Live status updates stream over WebSocket.</p>
+                </div>
                 <div id="jobs-list" class="jobs-list">
-                    <p class="no-jobs">No active jobs. Upload FLAC files to get started.</p>
+                    <p class="no-jobs">No active jobs. Select files or folders from the library to start a conversion.</p>
                 </div>
             </section>
         </main>
 
-        <!-- Job Card Template -->
         <template id="job-template">
-            <div class="job-card glass-card" data-job-id="">
+            <div class="job-card" data-job-id="">
                 <div class="job-header">
                     <h3 class="job-title"></h3>
                     <span class="job-status"></span>
@@ -69,19 +100,18 @@
                     <div class="file-list"></div>
                 </div>
                 <div class="job-actions">
-                    <button class="btn btn-download" style="display: none;">Download All (ZIP)</button>
+                    <button class="btn btn-download" type="button" style="display: none;">Download All (ZIP)</button>
                 </div>
             </div>
         </template>
     </div>
 
-    <!-- Toast Notifications Container -->
     <div id="toast-container" class="toast-container"></div>
 
     <script src="/js/animator.js" type="module"></script>
     <script src="/js/toast.js" type="module"></script>
     <script src="/js/websocket.js" type="module"></script>
-    <script src="/js/uploader.js" type="module"></script>
+    <script src="/js/music-browser.js" type="module"></script>
     <script src="/js/app.js" type="module"></script>
 </body>
 </html>
