@@ -127,17 +127,10 @@ class ConversionWebSocket {
     }
 
     updateConnectionStatus(isConnected) {
-        const statusEl = document.getElementById('connection-status');
-        if (statusEl) {
-            statusEl.className = 'connection-status ' + (isConnected ? 'connected' : 'disconnected');
-            statusEl.textContent = isConnected ? 'Connected' : 'Disconnected';
-
-            if (isConnected) {
-                setTimeout(() => {
-                    statusEl.style.display = 'none';
-                }, 3000);
-            }
-        }
+        // Emit custom event for toast manager to handle
+        window.dispatchEvent(new CustomEvent('ws-connection-status', {
+            detail: { isConnected }
+        }));
     }
 
     getActiveJobs() {

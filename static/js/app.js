@@ -1,24 +1,39 @@
 import ConversionWebSocket from './websocket.js';
 import FileUploader from './uploader.js';
+import { Animator } from './animator.js';
+import { ToastManager } from './toast.js';
 
 class NarayanApp {
     constructor() {
         this.ws = new ConversionWebSocket();
         this.jobs = new Map();
         this.pollInterval = null;
+
+        // Initialize animator and toast manager
+        this.animator = new Animator();
+        this.toastManager = new ToastManager();
+
         this.init();
     }
 
     init() {
+        // Animate page load
+        this.animator.animatePageLoad();
+
         // Initialize WebSocket
         this.ws.connect();
         this.setupWebSocketHandlers();
 
-        // Initialize uploader
+        // Setup toast connection listener
+        this.toastManager.setupConnectionListener();
+
+        // Initialize uploader with animator and toast manager
         this.uploader = new FileUploader(
             'drop-zone',
             'file-input',
-            (data) => this.handleUploadComplete(data)
+            (data) => this.handleUploadComplete(data),
+            this.toastManager,
+            this.animator
         );
 
         // Load existing jobs from localStorage
@@ -83,7 +98,7 @@ class NarayanApp {
         // Remove "no jobs" message
         const noJobsMsg = document.querySelector('.no-jobs');
         if (noJobsMsg) {
-            noJobsMsg.remove();
+            this.animator.fadeOut(noJobsMsg, () => noJobsMsg.remove());
         }
 
         // Check if job already displayed
@@ -108,6 +123,12 @@ class NarayanApp {
         // Add to jobs list
         const jobsList = document.getElementById('jobs-list');
         jobsList.prepend(jobCard);
+
+        // Animate card entrance
+        const addedCard = jobsList.querySelector(`[data-job-id="${job.id}"]`);
+        if (addedCard) {
+            this.animator.animateJobCardEntrance(addedCard);
+        }
 
         // Store job reference
         this.jobs.set(job.id, job);
@@ -134,11 +155,11 @@ class NarayanApp {
             const total = job.status.total || job.files.length;
             const percent = total > 0 ? Math.round((current / total) * 100) : 0;
 
-            progressFill.style.width = `${percent}%`;
+            this.animator.animateProgress(progressFill, percent);
             progressText.textContent = `${percent}%`;
             statusText.textContent = `Processing file ${current + 1} of ${total}...`;
         } else if (job.status.type === 'complete') {
-            progressFill.style.width = '100%';
+            this.animator.animateProgress(progressFill, 100);
             progressText.textContent = '100%';
             statusText.textContent = `Completed in ${job.status.duration || 0}s`;
             downloadBtn.style.display = 'block';
@@ -154,8 +175,16 @@ class NarayanApp {
     }
 
     updateJobStatus(statusEl, status) {
-        statusEl.className = 'job-status ' + status.type;
-        statusEl.textContent = status.type.charAt(0).toUpperCase() + status.type.slice(1);
+        const newClass = 'job-status ' + status.type;
+        const newText = status.type.charAt(0).toUpperCase() + status.type.slice(1);
+
+        // Animate status change if it's different
+        if (statusEl.className !== newClass) {
+            this.animator.animateStatusChange(statusEl, () => {
+                statusEl.className = newClass;
+                statusEl.textContent = newText;
+            });
+        }
     }
 
     updateJobProgress(jobId, percent, file) {
@@ -166,13 +195,13 @@ class NarayanApp {
         const progressText = card.querySelector('.progress-text');
         const statusText = card.querySelector('.status-text');
 
-        progressFill.style.width = `${percent}%`;
+        this.animator.animateProgress(progressFill, percent);
         progressText.textContent = `${Math.round(percent)}%`;
         statusText.textContent = `Converting ${file}...`;
     }
 
     markJobComplete(jobId) {
-        console.log('Job complete:', jobId);
+        this.toastManager.success('Conversion completed successfully!');
         this.fetchAndDisplayJob(jobId);
         this.ws.unsubscribe(jobId);
     }
@@ -184,9 +213,13 @@ class NarayanApp {
         const status = card.querySelector('.job-status');
         const statusText = card.querySelector('.status-text');
 
-        status.className = 'job-status failed';
-        status.textContent = 'Failed';
+        this.animator.animateStatusChange(status, () => {
+            status.className = 'job-status failed';
+            status.textContent = 'Failed';
+        });
+
         statusText.textContent = `Error: ${error}`;
+        this.toastManager.error(`Conversion failed: ${error}`);
 
         this.ws.unsubscribe(jobId);
     }

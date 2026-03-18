@@ -4,11 +4,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Narayan - FLAC to MP3 Converter</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/css/styles.css">
+    <script type="importmap">
+    {
+        "imports": {
+            "animejs": "https://cdn.jsdelivr.net/npm/animejs@4.0.0/+esm"
+        }
+    }
+    </script>
 </head>
 <body>
+    <div id="background-gradient" class="animated-gradient"></div>
     <div id="app">
-        <header>
+        <header class="ethereal-header">
             <h1>Narayan</h1>
             <p>FLAC to MP3 Converter (320kbps)</p>
         </header>
@@ -16,15 +27,17 @@
         <main>
             <!-- Upload Zone -->
             <section class="upload-section">
-                <div id="drop-zone" class="drop-zone">
-                    <div class="drop-zone-content">
-                        <svg class="upload-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
-                        </svg>
-                        <p class="drop-text">Drag & drop FLAC files here</p>
-                        <p class="drop-subtext">or</p>
-                        <button id="browse-btn" class="btn btn-primary">Browse Files</button>
-                        <input type="file" id="file-input" multiple accept=".flac" style="display: none;">
+                <div class="glass-panel drop-zone-glass">
+                    <div id="drop-zone" class="drop-zone">
+                        <div class="drop-zone-content">
+                            <svg class="upload-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                            </svg>
+                            <p class="drop-text">Drag & drop FLAC files here</p>
+                            <p class="drop-subtext">or</p>
+                            <input type="file" id="file-input" multiple accept=".flac" style="display: none;">
+                            <label for="file-input" id="browse-btn" class="btn btn-primary">Browse Files</label>
+                        </div>
                     </div>
                 </div>
             </section>
@@ -40,7 +53,7 @@
 
         <!-- Job Card Template -->
         <template id="job-template">
-            <div class="job-card" data-job-id="">
+            <div class="job-card glass-card" data-job-id="">
                 <div class="job-header">
                     <h3 class="job-title"></h3>
                     <span class="job-status"></span>
@@ -62,9 +75,11 @@
         </template>
     </div>
 
-    <!-- Connection Status -->
-    <div id="connection-status" class="connection-status"></div>
+    <!-- Toast Notifications Container -->
+    <div id="toast-container" class="toast-container"></div>
 
+    <script src="/js/animator.js" type="module"></script>
+    <script src="/js/toast.js" type="module"></script>
     <script src="/js/websocket.js" type="module"></script>
     <script src="/js/uploader.js" type="module"></script>
     <script src="/js/app.js" type="module"></script>

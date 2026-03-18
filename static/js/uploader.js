@@ -1,9 +1,11 @@
 class FileUploader {
-    constructor(dropZoneId, fileInputId, onUploadComplete) {
+    constructor(dropZoneId, fileInputId, onUploadComplete, toastManager = null, animator = null) {
         this.dropZone = document.getElementById(dropZoneId);
         this.fileInput = document.getElementById(fileInputId);
         this.browseBtn = document.getElementById('browse-btn');
         this.onUploadComplete = onUploadComplete;
+        this.toastManager = toastManager;
+        this.animator = animator;
         this.init();
     }
 
@@ -18,12 +20,22 @@ class FileUploader {
         ['dragenter', 'dragover'].forEach(eventName => {
             this.dropZone.addEventListener(eventName, () => {
                 this.dropZone.classList.add('highlight');
+                // Animate icon pulse on drag
+                if (this.animator) {
+                    const dropZoneGlass = this.dropZone.closest('.drop-zone-glass');
+                    this.animator.animateDropZonePulse(dropZoneGlass || this.dropZone);
+                }
             });
         });
 
         ['dragleave', 'drop'].forEach(eventName => {
             this.dropZone.addEventListener(eventName, () => {
                 this.dropZone.classList.remove('highlight');
+                // Stop pulse animation
+                if (this.animator) {
+                    const dropZoneGlass = this.dropZone.closest('.drop-zone-glass');
+                    this.animator.stopDropZonePulse(dropZoneGlass || this.dropZone);
+                }
             });
         });
 
@@ -33,18 +45,21 @@ class FileUploader {
             this.handleFiles(files);
         });
 
-        // Handle click to browse
-        this.browseBtn.addEventListener('click', (e) => {
-            e.preventDefault();
-            this.fileInput.click();
-        });
+        // Label handles file input trigger automatically on all platforms
+        // No click handler needed for browse button (it's a label now)
 
-        this.dropZone.addEventListener('click', () => {
-            this.fileInput.click();
+        this.dropZone.addEventListener('click', (e) => {
+            // Don't trigger if clicking on the browse label or file input
+            if (e.target !== this.browseBtn &&
+                !this.browseBtn.contains(e.target) &&
+                e.target !== this.fileInput) {
+                this.fileInput.click();
+            }
         });
 
         // Handle file input change
         this.fileInput.addEventListener('change', (e) => {
+            console.log('File input changed, files:', e.target.files);
             this.handleFiles(e.target.files);
         });
     }
@@ -55,7 +70,16 @@ class FileUploader {
     }
 
     handleFiles(files) {
-        if (files.length === 0) return;
+        console.log('handleFiles called with:', files);
+        if (files.length === 0) {
+            console.log('No files selected');
+            return;
+        }
+
+        // Show selection confirmation
+        if (this.toastManager) {
+            this.toastManager.info(`Selected ${files.length} file${files.length > 1 ? 's' : ''}`);
+        }
 
         // Filter FLAC files
         const flacFiles = Array.from(files).filter(file =>
@@ -63,20 +87,18 @@ class FileUploader {
         );
 
         if (flacFiles.length === 0) {
-            this.showError('Please select FLAC files only');
+            this.showError('Please select FLAC files only (.flac extension required)');
             return;
         }
 
         if (flacFiles.length !== files.length) {
-            this.showWarning(`Filtered out ${files.length - flacFiles.length} non-FLAC files`);
+            this.showWarning(`Filtered out ${files.length - flacFiles.length} non-FLAC file${files.length - flacFiles.length > 1 ? 's' : ''}`);
         }
 
         this.uploadFiles(flacFiles);
     }
 
     async uploadFiles(files) {
-        console.log('Uploading files:', files.length);
-
         const formData = new FormData();
         files.forEach(file => {
             formData.append('files', file);
@@ -97,7 +119,6 @@ class FileUploader {
             }
 
             const data = await response.json();
-            console.log('Upload response:', data);
 
             // Clear file input
             this.fileInput.value = '';
@@ -107,7 +128,7 @@ class FileUploader {
                 this.onUploadComplete(data);
             }
 
-            this.showSuccess(`Uploaded ${data.file_count} files`);
+            this.showSuccess(`Started conversion of ${data.file_count} file${data.file_count > 1 ? 's' : ''}`);
 
         } catch (error) {
             console.error('Upload error:', error);
@@ -116,22 +137,29 @@ class FileUploader {
     }
 
     showUploading(count) {
-        // You could add a loading indicator here
-        console.log(`Uploading ${count} files...`);
+        if (this.toastManager) {
+            this.toastManager.info(`Uploading ${count} file${count > 1 ? 's' : ''}...`);
+        }
     }
 
     showSuccess(message) {
-        console.log('Success:', message);
-        // Could show a toast notification here
+        if (this.toastManager) {
+            this.toastManager.success(message);
+        }
     }
 
     showError(message) {
-        console.error('Error:', message);
-        alert(message);
+        if (this.toastManager) {
+            this.toastManager.error(message);
+        } else {
+            alert(message);
+        }
     }
 
     showWarning(message) {
-        console.warn('Warning:', message);
+        if (this.toastManager) {
+            this.toastManager.warning(message);
+        }
     }
 }
 
