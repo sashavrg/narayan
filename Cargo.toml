@@ -25,6 +25,7 @@ futures = "0.3"
 # File handling
 tempfile = "3.10"
 uuid = { version = "1.7", features = ["v4", "serde"] }
+zip = "2.2"
 
 # Error handling
 thiserror = "1.0"
