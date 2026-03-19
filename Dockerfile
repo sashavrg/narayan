@@ -4,7 +4,8 @@ FROM rust:1.83-slim AS builder
 WORKDIR /app
 
 # Install build dependencies
-RUN apt-get update && apt-get install -y \
+RUN apt-get -o Acquire::Retries=5 -o Acquire::http::Timeout=30 update && \
+    apt-get install -y --no-install-recommends \
     pkg-config \
     libssl-dev \
     && rm -rf /var/lib/apt/lists/*
@@ -36,8 +37,8 @@ RUN touch src/main.rs && \
 # Stage 2: Runtime image
 FROM debian:bookworm-slim
 
-# Install runtime dependencies
-RUN apt-get update && apt-get install -y \
+RUN apt-get -o Acquire::Retries=10 -o Acquire::ForceIPv4=true -o Acquire::http::Timeout=20 -o Acquire::https::Timeout=20 update && \
+    apt-get install -y --no-install-recommends \
     ffmpeg \
     zip \
     curl \
